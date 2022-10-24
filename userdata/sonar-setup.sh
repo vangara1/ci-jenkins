@@ -12,17 +12,18 @@ sonarqube   -   nofile   65536
 sonarqube   -   nproc    409
 EOT
 
-sudo apt-get update -y
-sudo apt-get install openjdk-11-jdk -y
+sudo yum update -y
+sudo yum install java-11-openjdk -y
 sudo update-alternatives --config java
 
 java -version
 
-sudo apt update
+sudo yum update -y
+sudo yum -y install wget
 wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | sudo apt-key add -
 
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
-sudo apt install postgresql postgresql-contrib -y
+sudo yum install postgresql postgresql-contrib -y
 #sudo -u postgres psql -c "SELECT version();"
 sudo systemctl enable postgresql.service
 sudo systemctl start  postgresql.service
@@ -37,7 +38,7 @@ netstat -tulpena | grep postgres
 sudo mkdir -p /sonarqube/
 cd /sonarqube/
 sudo curl -O https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.3.0.34182.zip
-sudo apt-get install zip -y
+sudo yum install zip -y
 sudo unzip -o sonarqube-8.3.0.34182.zip -d /opt/
 sudo mv /opt/sonarqube-8.3.0.34182/ /opt/sonarqube
 sudo groupadd sonar
@@ -83,7 +84,7 @@ systemctl daemon-reload
 systemctl enable sonarqube.service
 #systemctl start sonarqube.service
 #systemctl status -l sonarqube.service
-apt-get install nginx -y
+sudo yum install nginx -y
 rm -rf /etc/nginx/sites-enabled/default
 rm -rf /etc/nginx/sites-available/default
 cat <<EOT> /etc/nginx/sites-available/sonarqube
